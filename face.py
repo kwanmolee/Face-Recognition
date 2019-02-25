@@ -20,7 +20,7 @@ def load_data(path='/Users/momolee/Downloads/lee/*.jpg'):
 		data.append(np.ravel(pictures[i].reshape((1,pictures[i].shape[0]*pictures[i].shape[1])))) #flatten the matrix from 193*162 to 1*31266
 	return np.matrix(data).T # transpose matrix to 31266*1
 
-a=load_data(path='/Users/momolee/Downloads/lee/*.jpg') # the training set of first 190 faces
+a=load_data(path='/*.jpg') # the training set of first 190 faces
 
 '''
 # PCA function 
@@ -47,7 +47,7 @@ def PCA(a,number_of_PCs=190):
 
 '''
 
-def pick_image(m=188,neutral=True,first_190=True,number_of_PCs=80,path='/Users/momolee/Downloads/lee/',path1='/Users/momolee/Downloads/lee1/',path2='/Users/momolee/Downloads/lee2/'):
+def pick_image(m=188,neutral=True,first_190=True,number_of_PCs=80,path='/',path1='/',path2='/'):
 	assert isinstance(number_of_PCs,int) and 1<=number_of_PCs<=190
 	assert neutral+first_190>=1
 	avgImg=np.mean(a,1)
@@ -79,7 +79,7 @@ no=[190,100,80,50,40,20]
 i=0
 for ax in axs.flatten():
 	plt.title('Reconstructed Face(neutral')
-	img,reconstruct=pick_image(m=195,neutral=True,first_190=False,number_of_PCs=no[i],path='/Users/momolee/Downloads/lee/',path1='/Users/momolee/Downloads/lee1/',path2='/Users/momolee/Downloads/lee2/')
+	img,reconstruct=pick_image(m=195,neutral=True,first_190=False,number_of_PCs=no[i],path='/',path1='/',path2='/')
 	ax.imshow(reconstruct,cmap=cm.gray)
 	ax.set_title('PC Number:'+str(no[i]),weight='bold')
 	i+=1
