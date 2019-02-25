@@ -11,7 +11,7 @@ import matplotlib.image as mpimg
 : for data/image loading
 : there are 190 images(neutral faces) in total, with the extension of a.jpg
 '''
-def load_data(path='/Users/momolee/Downloads/lee/*.jpg'):
+def load_data(path='/*.jpg'):
 	assert isinstance(path,str)
 	pictures=io.ImageCollection(path) # get all imgaes with the extension of .jpg
 	data=[]
@@ -19,9 +19,10 @@ def load_data(path='/Users/momolee/Downloads/lee/*.jpg'):
 		data.append(np.ravel(pictures[i].reshape((1,pictures[i].shape[0]*pictures[i].shape[1])))) #flatten the matrix from 193*162 to 1*31266
 	return np.matrix(data).T # transpose matrix to 31266*1
 
-a=load_data(path='/Users/momolee/Downloads/lee/*.jpg') # the training set of first 190 faces
+a=load_data(path='/*.jpg') # the training set of first 190 faces
 '''
 def PCA(a,number_of_PCs=190):
+	# self programmed pca function
 	assert isinstance(number_of_PCs,int)
 	avgImg=np.mean(a,1) # mean image
 	diff_train=a-avgImg # each eigenface minus the mean image [31266,190]
@@ -47,7 +48,11 @@ def PCA(a,number_of_PCs=190):
 pca=PCA(190,whiten=True)
 b=pca.fit_transform(a)[:,0]
 
-def pick_image(neutral=True,first_190=True,number_of_PCs=80,path='/Users/momolee/Downloads/lee/',path1='/Users/momolee/Downloads/lee1/',path2='/Users/momolee/Downloads/lee2/'):
+def pick_image(neutral=True,first_190=True,number_of_PCs=80,path='/',path1='/',path2='/'):
+	'''
+	: randomly pick a face image (neutral or smiling) and reconstruct it
+	: first 190 of the neutral faces form the traning set
+	'''
 	assert isinstance(number_of_PCs,int) and 1<=number_of_PCs<=190
 	assert neutral+first_190>=1
 	avgImg=np.mean(a,1)
@@ -74,7 +79,11 @@ def pick_image(neutral=True,first_190=True,number_of_PCs=80,path='/Users/momolee
 
 	return img,reconstruct
 
-def nonhuman_image(path='/Users/momolee/Downloads/test_brunch.jpg'):
+def nonhuman_image(path='/_.jpg'):
+	'''
+	: test non-human images with the human-face training set above
+	and see the performance
+	'''
 	assert isinstance(path,str)
 	avgImg=np.mean(a,1)
 	pca=PCA(190,whiten=True) # data processing with PCA
@@ -92,7 +101,10 @@ def nonhuman_image(path='/Users/momolee/Downloads/test_brunch.jpg'):
 
 	return img,reconstruct
 
-def rotate_image(path='/Users/momolee/Downloads/78a.jpg',degree=20):
+def rotate_image(path='/78a.jpg',degree=20):
+	'''
+	: rotate the images with different degrees and see the performance of face recognition
+	'''
 	assert isinstance(path,str)
 	avgImg=np.mean(a,1)
 	pca=PCA(190,whiten=True) # data processing with PCA
