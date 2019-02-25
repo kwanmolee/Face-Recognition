@@ -12,7 +12,7 @@ import matplotlib.image as mpimg
 : for data/image loading
 : there are 190 images(neutral faces) in total, with the extension of a.jpg
 '''
-def load_data(path='/Users/momolee/Downloads/lee/*.jpg'):
+def load_data(path='/*.jpg'):
 	assert isinstance(path,str)
 	pictures=io.ImageCollection(path) # get all imgaes with the extension of .jpg
 	data=[]
@@ -48,6 +48,15 @@ def PCA(a,number_of_PCs=190):
 '''
 
 def pick_image(m=188,neutral=True,first_190=True,number_of_PCs=80,path='/',path1='/',path2='/'):
+	'''
+	: pick your image from neutral training set/ neutral test set/ smiling test set
+	and see the reconstruction performance by PCA with the neutral facial expression training set
+	: m: index of face images in the file path
+	: number_of_PCs: number of principal components used in PCA
+	: path: store 190 neurtal faces as the traning set
+	: path1: store 10 neutral faces as the test set
+	: path2; store 200 smiling faces as the test set
+	'''
 	assert isinstance(number_of_PCs,int) and 1<=number_of_PCs<=190
 	assert neutral+first_190>=1
 	avgImg=np.mean(a,1)
@@ -75,9 +84,13 @@ def pick_image(m=188,neutral=True,first_190=True,number_of_PCs=80,path='/',path1
 
 x=[1,range(5,55,5)]
 fig,axs=subplots(3,4,sharex=True,sharey=True)
+# number of principal components 
 no=[190,100,80,50,40,20]
 i=0
 for ax in axs.flatten():
+	'''
+	: subplots of face reconstruction with different number of principal components used
+	'''
 	plt.title('Reconstructed Face(neutral')
 	img,reconstruct=pick_image(m=195,neutral=True,first_190=False,number_of_PCs=no[i],path='/',path1='/',path2='/')
 	ax.imshow(reconstruct,cmap=cm.gray)
